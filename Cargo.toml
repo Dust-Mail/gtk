@@ -1,5 +1,5 @@
 [package]
-name = "gtk"
+name = "dust-mail-gtk"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,3 +7,6 @@ edition = "2021"
 
 [dependencies]
 gtk = { version = "0.7.3", package = "gtk4", features = ["v4_10"] }
+
+[build-dependencies]
+glib-build-tools = "0.18.0"

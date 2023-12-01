@@ -56,6 +56,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "dust-mail-gtk"
+version = "0.1.0"
+dependencies = [
+ "glib-build-tools",
+ "gtk4",
+]
+
+[[package]]
 name = "equivalent"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -248,6 +256,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "glib-build-tools"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3431c56f463443cba9bc3600248bc6d680cb614c2ee1cdd39dab5415bd12ac5c"
+
+[[package]]
 name = "glib-macros"
 version = "0.18.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -334,13 +348,6 @@ dependencies = [
  "libc",
  "pango-sys",
  "system-deps",
-]
-
-[[package]]
-name = "gtk"
-version = "0.1.0"
-dependencies = [
- "gtk4",
 ]
 
 [[package]]

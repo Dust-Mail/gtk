@@ -1,12 +1,13 @@
 use gtk::prelude::*;
 
-use gtk::{Application, ApplicationWindow};
+use gtk::Application;
+
+mod window;
+
+use window::Window;
 
 pub fn build(app: &Application) {
-    let window = ApplicationWindow::builder()
-        .application(app)
-        .title("My GTK App")
-        .build();
+    let window = Window::new(app);
 
     // Present window
     window.present();
