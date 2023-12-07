@@ -134,11 +134,12 @@
           ];
 
           rustVersion = "1.70.0";
+          extraRustComponents = [ "rustfmt" ];
           packageFun = import ./Cargo.nix;
         };
 
         workspaceShell = rustPkgs.workspaceShell {
-          buildInputs = with pkgs; [ pkg-config rust-analyzer ];
+          buildInputs = with pkgs; [ pkg-config ];
         };
 
       in
