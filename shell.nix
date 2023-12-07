@@ -1,21 +1,13 @@
-let
-  rust_overlay = import (builtins.fetchTarball "https://github.com/oxalica/rust-overlay/archive/master.tar.gz");
-  pkgs = import <nixpkgs> { overlays = [ rust_overlay ]; };
-  rustVersion = "1.70.0";
-  rust = pkgs.rust-bin.stable.${rustVersion}.default.override {
-    extensions = [
-      "rust-src"
-    ];
-  };
-in
-pkgs.mkShell {
-  buildInputs = [
-    rust
-  ] ++ (with pkgs; [
-    rust-analyzer
-    pkg-config
-    gtk4
-  ]);
-
-  RUST_BACKTRACE = 1;
-}
+(import
+  (
+    let
+      lock = builtins.fromJSON (builtins.readFile ./flake.lock);
+    in
+    fetchTarball {
+      url = "https://github.com/edolstra/flake-compat/archive/${lock.nodes.flake-compat.locked.rev}.tar.gz";
+      sha256 = lock.nodes.flake-compat.locked.narHash;
+    }
+  )
+  {
+    src = ./.;
+  }).shellNix
