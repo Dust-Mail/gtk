@@ -1,13 +1,11 @@
 use gtk::prelude::*;
 
-use gtk::Application;
-
 mod sidebar;
 mod window;
 
 use window::Window;
 
-pub fn build(app: &Application) {
+pub fn build(app: &adw::Application) {
     let window = Window::new(app);
 
     window.present();

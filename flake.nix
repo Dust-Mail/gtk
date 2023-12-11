@@ -123,6 +123,15 @@
             })
 
             (pkgs.rustBuilder.rustLib.makeOverride {
+              name = "libadwaita-sys";
+              overrideAttrs = drv: {
+                buildInputs = drv.buildInputs or [ ] ++ [
+                  pkgs.libadwaita
+                ];
+              };
+            })
+
+            (pkgs.rustBuilder.rustLib.makeOverride {
               name = "dust-mail-gtk";
               overrideAttrs = drv: {
                 buildInputs = drv.buildInputs or [ ] ++ [

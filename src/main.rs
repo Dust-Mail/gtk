@@ -1,5 +1,5 @@
 use gtk::prelude::*;
-use gtk::{gio, glib, Application};
+use gtk::{gio, glib};
 
 const APP_ID: &str = "dev.guusvanmeerveld.DustMail";
 
@@ -9,7 +9,7 @@ fn main() -> glib::ExitCode {
     gio::resources_register_include!("composite_templates_1.gresource")
         .expect("Failed to register resources.");
 
-    let app = Application::builder().application_id(APP_ID).build();
+    let app = adw::Application::builder().application_id(APP_ID).build();
 
     app.connect_activate(ui::build);
 
