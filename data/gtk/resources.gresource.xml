@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+	<gresource prefix="/dev/guusvanmeerveld/dustmail/">
+		<file compressed="true" preprocess="xml-stripblanks">window.ui</file>
+		<file compressed="true" preprocess="xml-stripblanks">sidebar.ui</file>
+		<file compressed="true" preprocess="xml-stripblanks">folder_item.ui</file>
+	</gresource>
+</gresources>
