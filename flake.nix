@@ -6,7 +6,7 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
-    nixpkgs.follows = "cargo2nix/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
   };
 
   outputs = inputs: with inputs;
