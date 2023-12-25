@@ -1,13 +1,15 @@
-use gtk::prelude::*;
+use adw::{ActionRow, ExpanderRow};
+
+use gtk::glib::clone;
+
+use adw::prelude::*;
 use gtk::subclass::prelude::*;
 
-use gtk::{gio, glib, ListItem, NoSelection, SignalListItemFactory};
+use gtk::{gio, glib, NoSelection, Widget};
 
 use self::folder::FolderObject;
-use self::folder_item::FolderItem;
 
 mod folder;
-mod folder_item;
 
 glib::wrapper! {
     pub struct Sidebar(ObjectSubclass<imp::Sidebar>)
@@ -28,58 +30,79 @@ impl Sidebar {
     fn setup_folders(&self) {
         let model = gio::ListStore::new::<FolderObject>();
 
-        let test_folder = FolderObject::new("Hello", "hello");
-        model.append(&test_folder);
+        let test_folder2 = FolderObject::new(
+            "Test",
+            "test",
+            vec![
+                FolderObject::new(
+                    "Hello",
+                    "hello",
+                    vec![
+                        FolderObject::new("Hello", "hello", Vec::new()),
+                        FolderObject::new("Hello", "hello", Vec::new()),
+                    ],
+                ),
+                FolderObject::new("Hello", "hello", Vec::new()),
+            ],
+        );
+
+        model.append(&test_folder2);
 
         self.imp().folders.replace(Some(model));
 
         let selection_model = NoSelection::new(Some(self.folders()));
 
-        self.imp().folder_list.set_model(Some(&selection_model));
+        self.imp().folder_list.bind_model(
+            Some(&selection_model),
+            clone!(@weak self as sidebar => @default-panic, move |obj| {
+                let folder_object: &FolderObject = obj.downcast_ref().expect("The object should be of type `FolderObject`.");
+
+                let folder_item = sidebar.create_folder_item(folder_object);
+
+                folder_item.upcast()
+            }),
+        );
+
+        self.set_folder_list_visible(&self.folders());
     }
 
-    fn setup_factory(&self) {
-        let factory = SignalListItemFactory::new();
+    fn set_folder_list_visible(&self, folders: &gio::ListStore) {
+        self.imp().folder_list.set_visible(folders.n_items() > 0);
+    }
 
-        factory.connect_setup(move |_, list_item| {
-            let folder_item = FolderItem::new();
+    fn create_folder_item(&self, folder_object: &FolderObject) -> Widget {
+        if let Some(children) = folder_object.children() {
+            if children.n_items() > 0 {
+                let expander_row = ExpanderRow::builder().expanded(false).build();
 
-            list_item
-                .downcast_ref::<ListItem>()
-                .expect("Needs to be ListItem")
-                .set_child(Some(&folder_item));
-        });
+                for child in children.iter() {
+                    let child_object: FolderObject =
+                        child.expect("The object should be of type `FolderObject`.");
 
-        factory.connect_bind(move |_, list_item| {
-            let folder_object = list_item
-                .downcast_ref::<ListItem>()
-                .expect("Needs to be ListItem")
-                .item()
-                .and_downcast::<FolderObject>()
-                .expect("The item has to be an `FolderObject`.");
+                    let child_widget = self.create_folder_item(&child_object);
 
-            let folder_item = list_item
-                .downcast_ref::<ListItem>()
-                .expect("Needs to be ListItem")
-                .child()
-                .and_downcast::<FolderItem>()
-                .expect("The child has to be a `FolderItem`.");
+                    expander_row.add_row(&child_widget);
+                }
 
-            folder_item.bind(&folder_object);
-        });
+                folder_object
+                    .bind_property("name", &expander_row, "title")
+                    .bidirectional()
+                    .sync_create()
+                    .build();
 
-        factory.connect_unbind(move |_, list_item| {
-            let folder_item = list_item
-                .downcast_ref::<ListItem>()
-                .expect("Needs to be ListItem")
-                .child()
-                .and_downcast::<FolderItem>()
-                .expect("The child has to be a `FolderItem`.");
+                return expander_row.upcast();
+            }
+        }
 
-            folder_item.unbind();
-        });
+        let action_row = ActionRow::builder().build();
 
-        self.imp().folder_list.set_factory(Some(&factory));
+        folder_object
+            .bind_property("name", &action_row, "title")
+            .bidirectional()
+            .sync_create()
+            .build();
+
+        action_row.upcast()
     }
 }
 
@@ -90,7 +113,7 @@ mod imp {
 
     use gtk::glib::subclass::InitializingObject;
 
-    use gtk::{gio, glib, CompositeTemplate, ListView, SearchEntry};
+    use gtk::{gio, glib, CompositeTemplate, ListBox, SearchEntry};
 
     #[derive(CompositeTemplate, Default)]
     #[template(resource = "/dev/guusvanmeerveld/dustmail/sidebar.ui")]
@@ -98,7 +121,7 @@ mod imp {
         #[template_child]
         pub search: TemplateChild<SearchEntry>,
         #[template_child]
-        pub folder_list: TemplateChild<ListView>,
+        pub folder_list: TemplateChild<ListBox>,
         pub folders: RefCell<Option<gio::ListStore>>,
     }
 
@@ -125,7 +148,6 @@ mod imp {
             let obj = self.obj();
 
             obj.setup_folders();
-            obj.setup_factory();
         }
     }
 

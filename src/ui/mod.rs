@@ -1,4 +1,4 @@
-use gtk::prelude::*;
+use adw::prelude::*;
 
 mod sidebar;
 mod window;

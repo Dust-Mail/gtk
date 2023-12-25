@@ -3,7 +3,7 @@ use gtk::{gio, glib};
 
 glib::wrapper! {
     pub struct Window(ObjectSubclass<imp::Window>)
-        @extends gtk::ApplicationWindow, gtk::Window, gtk::Widget,
+        @extends adw::ApplicationWindow, gtk::ApplicationWindow, gtk::Window, gtk::Widget,
         @implements gio::ActionGroup, gio::ActionMap, gtk::Accessible, gtk::Buildable,
                     gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
@@ -15,7 +15,9 @@ impl Window {
 }
 
 mod imp {
-    use gtk::{subclass::prelude::*, HeaderBar};
+    use gtk::subclass::prelude::*;
+
+    use adw::subclass::prelude::*;
 
     use glib::subclass::InitializingObject;
 
@@ -28,8 +30,6 @@ mod imp {
     pub struct Window {
         #[template_child]
         pub sidebar: TemplateChild<Sidebar>,
-        #[template_child]
-        pub header_bar: TemplateChild<HeaderBar>,
     }
 
     #[glib::object_subclass]
@@ -37,7 +37,7 @@ mod imp {
         const NAME: &'static str = "DustMailWindow";
 
         type Type = super::Window;
-        type ParentType = gtk::ApplicationWindow;
+        type ParentType = adw::ApplicationWindow;
 
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
@@ -55,4 +55,6 @@ mod imp {
     impl WindowImpl for Window {}
 
     impl ApplicationWindowImpl for Window {}
+
+    impl AdwApplicationWindowImpl for Window {}
 }
