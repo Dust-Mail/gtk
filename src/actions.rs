@@ -6,7 +6,11 @@ use gtk::gio::ActionEntry;
 
 pub fn setup_application_actions(app: &Application) {
     let action_settings = ActionEntry::builder("settings")
-        .activate(|_app: &Application, _, _| {})
+        .activate(|app: &Application, _, _| {
+            let preferences_window = crate::ui::settings::Settings::new(app);
+
+            preferences_window.present();
+        })
         .build();
 
     let action_about = ActionEntry::builder("about")

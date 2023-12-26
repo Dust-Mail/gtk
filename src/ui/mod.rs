@@ -1,6 +1,7 @@
 use adw::prelude::*;
 
 pub mod about;
+pub mod settings;
 mod sidebar;
 mod window;
 
