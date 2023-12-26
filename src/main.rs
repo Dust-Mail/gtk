@@ -3,6 +3,8 @@ use gtk::{gio, glib};
 
 const APP_ID: &str = "dev.guusvanmeerveld.DustMail";
 
+mod actions;
+mod constants;
 mod ui;
 
 fn main() -> glib::ExitCode {
@@ -10,6 +12,8 @@ fn main() -> glib::ExitCode {
         .expect("Failed to register resources.");
 
     let app = adw::Application::builder().application_id(APP_ID).build();
+
+    actions::setup_application_actions(&app);
 
     app.connect_activate(ui::build);
 

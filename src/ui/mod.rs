@@ -1,5 +1,6 @@
 use adw::prelude::*;
 
+pub mod about;
 mod sidebar;
 mod window;
 
