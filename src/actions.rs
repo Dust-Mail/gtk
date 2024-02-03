@@ -21,5 +21,13 @@ pub fn setup_application_actions(app: &Application) {
         })
         .build();
 
-    app.add_action_entries([action_settings, action_about]);
+    let action_login = ActionEntry::builder("login")
+        .activate(|app: &Application, _, _| {
+            let login_window = crate::ui::login::LoginWindow::new(app);
+
+            login_window.present();
+        })
+        .build();
+
+    app.add_action_entries([action_settings, action_about, action_login]);
 }

@@ -4,6 +4,7 @@
 		<file compressed="true" preprocess="xml-stripblanks">window.ui</file>
 		<file compressed="true" preprocess="xml-stripblanks">sidebar.ui</file>
 		<file compressed="true" preprocess="xml-stripblanks">settings.ui</file>
+		<file compressed="true" preprocess="xml-stripblanks">login.ui</file>
 		<!-- <file compressed="true" preprocess="xml-stripblanks">messages.ui</file> -->
 	</gresource>
 </gresources>

@@ -5,6 +5,11 @@ const APP_ID: &str = "dev.guusvanmeerveld.DustMail";
 
 mod actions;
 mod constants;
+mod db;
+mod error;
+mod hash;
+mod paths;
+mod session;
 mod ui;
 
 fn main() -> glib::ExitCode {

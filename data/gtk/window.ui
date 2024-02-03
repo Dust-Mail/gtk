@@ -3,6 +3,12 @@
 	<menu id="main-menu">
 		<section>
 			<item>
+				<attribute name='label' translatable='yes'>_Add account</attribute>
+				<attribute name='action'>app.login</attribute>
+			</item>
+		</section>
+		<section>
+			<item>
 				<attribute name='label' translatable='yes'>_Settings</attribute>
 				<attribute name='action'>app.settings</attribute>
 			</item>
@@ -19,6 +25,7 @@
 		<property name="default-width">800</property>
 		<property name="default-height">800</property>
 		<child>
+
 			<object class="AdwBreakpoint">
 				<condition>max-width: 400sp</condition>
 				<setter object="split_view" property="collapsed">True</setter>
@@ -28,7 +35,7 @@
 			<object class="AdwNavigationSplitView" id="split_view">
 				<property name="sidebar">
 					<object class="AdwNavigationPage">
-						<property name="title" translatable="yes">Sidebar</property>
+						<property name="title" translatable="yes">Folders</property>
 						<property name="child">
 							<object class="DustMailSidebar" id="sidebar" />
 						</property>

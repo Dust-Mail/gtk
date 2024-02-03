@@ -10,9 +10,19 @@ authors = ["Guus van Meerveld <contact@guusvanmeerveld.dev>"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dust-mail = "0.4.3"
 adw = { version = "0.5.3", package = "libadwaita", features = ["v1_4"] }
 gtk = { version = "0.7.3", package = "gtk4", features = ["v4_10"] }
+gtk-macros = "0.3.0"
+
+diesel = { version = "2.1.4", features = ["sqlite"] }
+once_cell = "1.19.0"
+
+dust-mail = "0.4.3"
+tokio = "1.35.1"
+
+ring = "0.17.7"
+data-encoding = "2.5.0"
+thiserror = "1.0.56"
 
 [build-dependencies]
 glib-build-tools = "0.18.0"
